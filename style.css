@@ -232,10 +232,6 @@ tbody td.school-cell.igensia {
 }
 tbody tr:hover td { background: #F5F0FF; }
 tbody tr:hover td.school-cell { background: #F0E6FF !important; }
-tbody tr:hover td.score-cell {
-  background: inherit !important;
-  color: var(--white) !important;
-}
 
 .score-cell {
   font-weight: 800;
@@ -243,11 +239,16 @@ tbody tr:hover td.score-cell {
   color: var(--white);
   border-radius: 4px;
 }
-.score-elite { background: var(--score-elite) !important; }
-.score-avance { background: var(--score-avance) !important; }
-.score-correct { background: var(--score-correct) !important; color: #333 !important; }
-.score-retard { background: var(--score-retard) !important; }
-.score-insuffisant { background: var(--score-insuffisant) !important; }
+tbody tr:hover td.score-elite,
+tbody td.score-elite { background: var(--score-elite) !important; color: #fff !important; }
+tbody tr:hover td.score-avance,
+tbody td.score-avance { background: var(--score-avance) !important; color: #fff !important; }
+tbody tr:hover td.score-correct,
+tbody td.score-correct { background: var(--score-correct) !important; color: #333 !important; }
+tbody tr:hover td.score-retard,
+tbody td.score-retard { background: var(--score-retard) !important; color: #fff !important; }
+tbody tr:hover td.score-insuffisant,
+tbody td.score-insuffisant { background: var(--score-insuffisant) !important; color: #fff !important; }
 
 /* === JUSTIFICATIONS === */
 .justif-card {
