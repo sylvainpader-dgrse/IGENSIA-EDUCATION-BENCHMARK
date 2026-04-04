@@ -230,9 +230,12 @@ tbody td.school-cell.igensia {
   background: #F9F0FF;
   color: var(--primary);
 }
-tbody tr:hover td { background: #F5F0FF !important; }
+tbody tr:hover td { background: #F5F0FF; }
 tbody tr:hover td.school-cell { background: #F0E6FF !important; }
-tbody tr:hover .score-cell { color: var(--white) !important; }
+tbody tr:hover td.score-cell {
+  background: inherit !important;
+  color: var(--white) !important;
+}
 
 .score-cell {
   font-weight: 800;
@@ -240,14 +243,11 @@ tbody tr:hover .score-cell { color: var(--white) !important; }
   color: var(--white);
   border-radius: 4px;
 }
-tbody tr:hover td.score-cell {
-  opacity: 1 !important;
-}
-.score-elite { background: var(--score-elite); }
-.score-avance { background: var(--score-avance); }
-.score-correct { background: var(--score-correct); color: #333 !important; }
-.score-retard { background: var(--score-retard); }
-.score-insuffisant { background: var(--score-insuffisant); }
+.score-elite { background: var(--score-elite) !important; }
+.score-avance { background: var(--score-avance) !important; }
+.score-correct { background: var(--score-correct) !important; color: #333 !important; }
+.score-retard { background: var(--score-retard) !important; }
+.score-insuffisant { background: var(--score-insuffisant) !important; }
 
 /* === JUSTIFICATIONS === */
 .justif-card {

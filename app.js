@@ -111,7 +111,9 @@ function calcFinalNote(notes) {
 // TAB 1: GRILLE
 // =============================
 function renderGrille() {
-  const sorted = [...D.grille].sort((a, b) => b.score - a.score);
+  const igensia = D.grille.filter(s => isIgensia(s.name));
+  const others = [...D.grille].filter(s => !isIgensia(s.name)).sort((a, b) => b.score - a.score);
+  const sorted = [...igensia, ...others];
   const filtered = sorted.filter(s => matchesSearch(s.name));
 
   // Build category header row
@@ -160,11 +162,12 @@ function renderGrille() {
 // TAB 2: JUSTIFICATIONS
 // =============================
 function renderJustifications() {
-  const sorted = [...D.justifications];
-  // Match grille order (by score)
   const scoreMap = {};
   D.grille.forEach(g => { scoreMap[g.name] = g.score; });
-  sorted.sort((a, b) => (scoreMap[b.name] || 0) - (scoreMap[a.name] || 0));
+  const igensiaJ = D.justifications.filter(s => isIgensia(s.name));
+  const othersJ = [...D.justifications].filter(s => !isIgensia(s.name))
+    .sort((a, b) => (scoreMap[b.name] || 0) - (scoreMap[a.name] || 0));
+  const sorted = [...igensiaJ, ...othersJ];
 
   const filtered = sorted.filter(s => matchesSearch(s.name));
   const container = document.getElementById('justifList');
