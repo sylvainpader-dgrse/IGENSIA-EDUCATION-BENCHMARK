@@ -146,7 +146,7 @@ function renderGrille() {
   let body = '';
   filtered.forEach(s => {
     const ig = isIgensia(s.name);
-    body += `<tr>`;
+    body += `<tr class="${ig ? 'igensia-row' : ''}">`;
     body += `<td class="school-cell ${ig ? 'igensia' : ''}">${s.name.replace(/\n/g, ' ')}</td>`;
     for (let j = 1; j <= 29; j++) {
       const v = s.verdicts[j] || '';
