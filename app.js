@@ -133,8 +133,7 @@ function renderGrille() {
   let critRow = '<tr><th class="school-col">École</th>';
   D.criteria.forEach((c, i) => {
     if (i < 29) {
-      const short = c.name.length > 20 ? c.name.substring(0, 18) + '...' : c.name;
-      critRow += `<th title="${c.name}">${short}</th>`;
+      critRow += `<th title="${c.name}">${c.name}</th>`;
     }
   });
   critRow += '<th class="score-col">/29</th></tr>';
