@@ -163,7 +163,8 @@ main {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   background: var(--white);
-  overflow-x: auto;
+  overflow: auto;
+  max-height: 85vh;
   position: relative;
 }
 table {
@@ -264,40 +265,6 @@ tbody tr:hover td.score-retard,
 tbody td.score-retard { background: var(--score-retard) !important; color: #fff !important; }
 tbody tr:hover td.score-insuffisant,
 tbody td.score-insuffisant { background: var(--score-insuffisant) !important; color: #fff !important; }
-
-/* === STICKY HEADER CLONE === */
-.sticky-thead-clone {
-  position: fixed;
-  top: 0;
-  z-index: 100;
-  overflow: hidden;
-  display: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-.sticky-thead-clone table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8rem;
-  table-layout: fixed;
-}
-.sticky-thead-clone th {
-  background: var(--primary);
-  color: var(--white);
-  padding: 0.6rem 0.4rem;
-  font-weight: 600;
-  font-size: 0.65rem;
-  text-align: center;
-  border-right: 1px solid var(--primary-light);
-  white-space: normal;
-  line-height: 1.3;
-  vertical-align: middle;
-  overflow: hidden;
-}
-.sticky-thead-clone .cat-header {
-  background: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 800;
-}
 
 /* === JUSTIFICATIONS === */
 .justif-card {

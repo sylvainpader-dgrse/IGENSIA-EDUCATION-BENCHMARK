@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTabs();
   setupSearch();
   renderAll();
-  setupStickyHeader();
 });
 
 function setupTabs() {
@@ -52,59 +51,6 @@ function setupTabs() {
       document.getElementById('tab-' + currentTab).classList.add('active');
     });
   });
-}
-
-function setupStickyHeader() {
-  const wrapper = document.querySelector('.table-wrapper');
-  if (!wrapper) return;
-
-  let stickyEl = null;
-
-  function onScroll() {
-    const table = document.getElementById('grilleTable');
-    const thead = table?.querySelector('thead');
-    if (!thead || currentTab !== 'grille') {
-      if (stickyEl) stickyEl.style.display = 'none';
-      return;
-    }
-
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const theadRect = thead.getBoundingClientRect();
-
-    if (wrapperRect.top < 0 && wrapperRect.bottom > 80) {
-      // Header should be sticky
-      if (!stickyEl) {
-        stickyEl = document.createElement('div');
-        stickyEl.className = 'sticky-thead-clone';
-        document.body.appendChild(stickyEl);
-      }
-      // Clone thead into sticky element
-      const cloneTable = document.createElement('table');
-      cloneTable.innerHTML = thead.outerHTML;
-      // Match column widths
-      const origCells = thead.querySelectorAll('th');
-      const cloneCells = cloneTable.querySelectorAll('th');
-      origCells.forEach((cell, i) => {
-        if (cloneCells[i]) cloneCells[i].style.width = cell.offsetWidth + 'px';
-      });
-      stickyEl.innerHTML = '';
-      stickyEl.appendChild(cloneTable);
-      stickyEl.style.display = 'block';
-      stickyEl.style.left = wrapperRect.left + 'px';
-      stickyEl.style.width = wrapperRect.width + 'px';
-      // Sync horizontal scroll
-      stickyEl.scrollLeft = wrapper.scrollLeft;
-    } else {
-      if (stickyEl) stickyEl.style.display = 'none';
-    }
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  wrapper.addEventListener('scroll', () => {
-    if (stickyEl && stickyEl.style.display !== 'none') {
-      stickyEl.scrollLeft = wrapper.scrollLeft;
-    }
-  }, { passive: true });
 }
 
 function setupSearch() {
