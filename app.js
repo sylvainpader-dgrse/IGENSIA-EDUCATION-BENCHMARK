@@ -75,44 +75,6 @@ function scoreClass(score) {
   return 'score-insuffisant';
 }
 
-function shortHeader(name) {
-  const map = {
-    'Poste RSE dédié au COMEX/DG': 'Poste RSE',
-    'Comité RSE opérationnel actif': 'Comité RSE',
-    'Plan / feuille de route RSE formalisé': 'Plan RSE',
-    'Label ou certification RSE externe': 'Label RSE',
-    'Budget RSE dédié (connu/estimé)': 'Budget RSE',
-    'Sensibilisation VSS': 'VSS',
-    'Accompagnement Handicap ': 'Handicap',
-    'Accompagnement Handicap': 'Handicap',
-    'Accord QVCT ou équivalent': 'QVCT',
-    'Dispositif anticorruption & alerte': 'Anticorruption',
-    'Politique diversité & ouverture sociale': 'Diversité',
-    'Socle DD obligatoire (heures ≥ 15h)': 'Socle DD',
-    'Parcours spécialisé RSE/DD diplômant ': 'Parcours RSE',
-    'Parcours spécialisé RSE/DD diplômant': 'Parcours RSE',
-    'DD intégré dans 100% des programmes': 'DD 100%',
-    'Formation des enseignants aux enjeux DD': 'Form. profs',
-    'Fresque Climat ou atelier équivalent': 'Fresque Climat',
-    'Bilan Carbone réalisé (scopes 1+2)': 'Bilan Carbone',
-    'Scope 3 inclus dans le bilan': 'Scope 3',
-    'Objectif réduction GES chiffré': 'Objectif GES',
-    'Numérique responsable formalisé': 'Num. resp.',
-    'Politique mobilité durable': 'Mobilité',
-    'Action Biodiversité ': 'Biodiversité',
-    'Action Biodiversité': 'Biodiversité',
-    'Charte achats responsables adoptée': 'Achats resp.',
-    'Tri et gestion déchets formalisés': 'Déchets',
-    'Campus certifié ou éco-labellisé': 'Campus certifié',
-    'Politique alimentation durable campus': 'Alim. durable',
-    'Rapport/page RSE public disponible': 'Rapport RSE',
-    'Contenu mis à jour ≤ 2 ans': 'MAJ ≤ 2 ans',
-    'Accessible en ≤ 3 clics site web': '≤ 3 clics',
-    'KPIs RSE publiés avec données chiffrées': 'KPIs RSE',
-  };
-  return map[name] || name;
-}
-
 function getCatName(letter) {
   const names = {
     'A': 'Gouvernance',
@@ -185,8 +147,7 @@ function renderGrille() {
   let critRow = '<tr><th class="school-col">École / Groupe</th>';
   D.criteria.forEach((c, i) => {
     if (i < 29) {
-      const short = shortHeader(c.name);
-      critRow += `<th title="${c.name}">${short}</th>`;
+      critRow += `<th title="${c.name}">${c.name}</th>`;
     }
   });
   critRow += '<th class="score-col">/29</th></tr>';
