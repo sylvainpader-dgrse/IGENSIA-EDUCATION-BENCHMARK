@@ -283,6 +283,12 @@ tbody td.score-insuffisant { background: var(--score-insuffisant) !important; co
   gap: 1rem;
 }
 .justif-header:hover { background: #F5F0FF; }
+.justif-header:hover .score-tag { opacity: 1 !important; }
+.score-tag.score-elite { background: var(--score-elite) !important; }
+.score-tag.score-avance { background: var(--score-avance) !important; }
+.score-tag.score-correct { background: var(--score-correct) !important; color: #333 !important; }
+.score-tag.score-retard { background: var(--score-retard) !important; }
+.score-tag.score-insuffisant { background: var(--score-insuffisant) !important; }
 .justif-header .school-name {
   font-weight: 700;
   font-size: 1rem;
@@ -294,11 +300,13 @@ tbody td.score-insuffisant { background: var(--score-insuffisant) !important; co
   border-radius: 20px;
   font-weight: 800;
   font-size: 0.85rem;
-  color: var(--white);
+  color: var(--white) !important;
   min-width: 80px;
   text-align: center;
   flex-shrink: 0;
   margin-left: auto;
+  position: relative;
+  z-index: 2;
 }
 .justif-header .arrow {
   font-size: 1.2rem;
