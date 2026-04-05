@@ -1088,18 +1088,19 @@ tbody td.score-insuffisant { background: var(--score-insuffisant) !important; co
   background: var(--primary);
   color: var(--white);
   padding: 0.5rem 0.8rem;
-  text-align: left;
+  text-align: left !important;
   font-weight: 700;
   font-size: 0.75rem;
   vertical-align: middle;
 }
-.xerfi-table td {
+.xerfi-table tbody td {
   padding: 0.5rem 0.8rem;
   border-bottom: 1px solid var(--border);
-  text-align: left;
+  text-align: left !important;
   vertical-align: top;
+  border-right: none;
 }
-.xerfi-table td:first-child {
+.xerfi-table tbody td:first-child {
   font-weight: 600;
 }
 .xerfi-table .negative { color: var(--non-text); font-weight: 700; }
