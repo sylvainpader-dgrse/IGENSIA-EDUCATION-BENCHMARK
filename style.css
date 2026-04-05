@@ -116,11 +116,10 @@ header {
 }
 .tab-separator {
   width: 2px;
-  background: var(--accent);
-  margin: 0.6rem 1rem;
+  background: var(--non-text);
+  margin: 0.4rem 0.8rem;
   align-self: stretch;
-  border-radius: 1px;
-  opacity: 0.6;
+  opacity: 0.3;
 }
 
 /* === MAIN === */
