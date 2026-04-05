@@ -746,6 +746,7 @@ function renderRadar() {
 
   // Build 2050analytics radar
   render2050Radar();
+  renderRadarComparison(igensiaData);
 
   // Build comparison table
   const tableEl = document.getElementById('radarTable');
@@ -785,6 +786,90 @@ function renderRadar() {
     html += '</tbody></table>';
     tableEl.innerHTML = html;
   }
+}
+
+// =============================
+// RADAR COMPARISON PANEL
+// =============================
+function renderRadarComparison(igensiaData) {
+  const el = document.getElementById('radarComparison');
+  if (!el) return;
+
+  if (radarSchools.length === 0) {
+    el.innerHTML = '<div class="comparison-hint">Ajoutez des écoles via le sélecteur ci-dessus pour comparer critère par critère avec IGENSIA.</div>';
+    return;
+  }
+
+  const otherSchools = radarSchools.map(name => D.grille.find(s => s.name === name)).filter(Boolean);
+  if (!igensiaData || otherSchools.length === 0) return;
+
+  let html = '<h3>Comparaison détaillée par axe</h3>';
+
+  AXES.forEach(axe => {
+    // Compute IGENSIA score for this axe
+    const igScore = axe.cols.reduce((sum, col) => {
+      const v = igensiaData.verdicts[String(col)] || '';
+      return sum + (v === 'OUI' ? 1 : v === 'PARTIEL' ? 0.5 : 0);
+    }, 0);
+
+    html += `<div class="comparison-axe">`;
+    html += `<div class="comparison-axe-header">
+      <span>${axe.id} — ${axe.name}</span>
+      <span class="axe-scores">IGENSIA : ${igScore}/${axe.max}</span>
+    </div>`;
+    html += `<div class="comparison-columns">`;
+
+    // Left: IGENSIA
+    html += `<div class="comparison-col col-igensia">`;
+    html += `<div class="comparison-col-title">IGENSIA Education</div>`;
+    axe.cols.forEach(col => {
+      const v = igensiaData.verdicts[String(col)] || '';
+      const critName = D.criteria[col - 1]?.name || '';
+      const dotCls = v === 'OUI' ? 'dot-oui' : v === 'PARTIEL' ? 'dot-partiel' : 'dot-non';
+      html += `<div class="crit-line">
+        <span class="crit-dot ${dotCls}"></span>
+        <span class="crit-label">${critName} <strong>(${v})</strong></span>
+      </div>`;
+    });
+    html += `</div>`;
+
+    // Right: Others - show what they do BETTER than IGENSIA
+    html += `<div class="comparison-col col-others">`;
+    html += `<div class="comparison-col-title">Écoles comparées — bonnes pratiques</div>`;
+
+    let hasBetter = false;
+    axe.cols.forEach(col => {
+      const igV = igensiaData.verdicts[String(col)] || '';
+      if (igV === 'OUI') return; // IGENSIA already has it, skip
+
+      const critName = D.criteria[col - 1]?.name || '';
+      const schoolsWithOui = [];
+      otherSchools.forEach(s => {
+        const v = s.verdicts[String(col)] || '';
+        if (v === 'OUI' || (igV === 'NON' && v === 'PARTIEL')) {
+          schoolsWithOui.push({ name: s.name.replace(/\n/g, ' ').substring(0, 20), verdict: v });
+        }
+      });
+
+      if (schoolsWithOui.length > 0) {
+        hasBetter = true;
+        const names = schoolsWithOui.map(s => s.name).join(', ');
+        html += `<div class="crit-line">
+          <span class="crit-dot dot-oui"></span>
+          <span class="crit-label">${critName}<br><span class="school-tag">${names}</span></span>
+        </div>`;
+      }
+    });
+
+    if (!hasBetter) {
+      html += `<div class="comparison-empty">IGENSIA est au niveau ou au-dessus sur cet axe.</div>`;
+    }
+
+    html += `</div>`;
+    html += `</div></div>`;
+  });
+
+  el.innerHTML = html;
 }
 
 // =============================

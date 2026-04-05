@@ -675,6 +675,106 @@ tbody td.score-insuffisant { background: var(--score-insuffisant) !important; co
 @media (max-width: 900px) {
   .radar-dual { grid-template-columns: 1fr; }
 }
+/* === RADAR COMPARISON === */
+.radar-comparison {
+  margin-top: 2rem;
+}
+.radar-comparison h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+}
+.comparison-axe {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.comparison-axe-header {
+  background: var(--primary);
+  color: var(--white);
+  padding: 0.6rem 1rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.comparison-axe-header .axe-scores {
+  font-weight: 400;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+.comparison-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.comparison-col {
+  padding: 0.8rem 1rem;
+}
+.comparison-col:first-child {
+  border-right: 1px solid var(--border);
+}
+.comparison-col-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.comparison-col.col-igensia { background: #FDFAFF; }
+.comparison-col.col-others { background: #F8FFF8; }
+.crit-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding: 0.25rem 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.crit-line .crit-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 4px;
+}
+.crit-dot.dot-oui { background: var(--oui-text); }
+.crit-dot.dot-partiel { background: var(--partiel-text); }
+.crit-dot.dot-non { background: var(--non-text); }
+.crit-line .crit-label {
+  flex: 1;
+}
+.crit-line .crit-label .school-tag {
+  font-size: 0.65rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+.comparison-empty {
+  color: var(--text-light);
+  font-style: italic;
+  font-size: 0.8rem;
+  padding: 0.5rem 0;
+}
+.comparison-hint {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-light);
+  font-style: italic;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+@media (max-width: 700px) {
+  .comparison-columns { grid-template-columns: 1fr; }
+  .comparison-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
 .radar-table-wrapper {
   background: var(--white);
   border-radius: var(--radius);
