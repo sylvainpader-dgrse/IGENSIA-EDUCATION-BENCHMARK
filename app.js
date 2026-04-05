@@ -681,14 +681,24 @@ function render2050Radar() {
 
   const datasets = [];
 
+  // IGENSIA always first in 2050 radar
+  const igensiaKey2050 = Object.keys(D.analytics2050).find(k => k.toUpperCase().includes('IGENSIA'));
+  if (igensiaKey2050 && D.analytics2050[igensiaKey2050]) {
+    const d = D.analytics2050[igensiaKey2050];
+    datasets.push({
+      label: 'IGENSIA Education',
+      data: KEYS_2050.map(k => d[k]),
+      backgroundColor: RADAR_COLORS[0].bg,
+      borderColor: RADAR_COLORS[0].border,
+      borderWidth: 3,
+      pointRadius: 5,
+    });
+  }
+
   // Add selected schools that have 2050 data
-  const schoolsToShow = radarSchools.filter(name => D.analytics2050[name]);
+  const schoolsToShow = radarSchools.filter(name => D.analytics2050[name] && !name.toUpperCase().includes('IGENSIA'));
 
-  // Always try to show OMNES (top 2050) and HEC as defaults if nothing selected
-  const defaults2050 = ['OMNES EDUCATION', 'HEC PARIS', 'ESSEC BUSINESS SCHOOL'];
-  const shown2050 = schoolsToShow.length > 0 ? schoolsToShow : defaults2050.filter(n => D.analytics2050[n]);
-
-  shown2050.forEach((name, i) => {
+  schoolsToShow.forEach((name, i) => {
     const d = D.analytics2050[name];
     if (!d) return;
     const colorIdx = (i + 2) % RADAR_COLORS.length;
