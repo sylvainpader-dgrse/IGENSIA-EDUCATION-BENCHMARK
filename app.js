@@ -49,6 +49,9 @@ function setupTabs() {
       btn.classList.add('active');
       currentTab = btn.dataset.tab;
       document.getElementById('tab-' + currentTab).classList.add('active');
+      // Show stats banner only on grille/justifications/radar
+      const banner = document.getElementById('statsBanner');
+      if (banner) banner.style.display = ['grille','justifications','radar'].includes(currentTab) ? '' : 'none';
     });
   });
 }
