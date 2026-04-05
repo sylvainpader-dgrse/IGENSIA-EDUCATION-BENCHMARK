@@ -222,7 +222,7 @@ function renderGrille() {
       const cls = l === 'DD&RS' ? 'pill-ddrs' : l === 'LUCIE' ? 'pill-lucie' : l === 'EcoVadis' ? 'pill-ecovadis' : l.includes('ISO') ? 'pill-iso' : l === 'Label RSE' ? 'pill-ddrs' : 'pill-bcorp';
       pills += `<span class="label-pill ${cls}">${l}</span>`;
     });
-    if (labelInfo.sam) pills += `<span class="label-pill pill-sam">Sté à Mission</span>`;
+    if (labelInfo.sam) pills += `<span class="label-pill pill-sam">Société à Mission</span>`;
     if (labelInfo.pacte) pills += `<span class="label-pill pill-pacte">Pacte Mondial</span>`;
     body += `<td class="school-cell ${ig ? 'igensia' : ''}">${s.name.replace(/\n/g, ' ')}${pills ? '<div class="school-labels">' + pills + '</div>' : ''}</td>`;
     for (let j = 1; j <= 29; j++) {
