@@ -484,7 +484,8 @@ function getAxeScore(school, axe) {
     if (v === 'OUI') score += 1;
     else if (v === 'PARTIEL') score += 0.5;
   }
-  return (score / axe.max) * 100;
+  // Plafonné à 85% : un OUI binaire ne vaut pas 100% d'excellence
+  return (score / axe.max) * 85;
 }
 
 function getAvgAxeScores() {
