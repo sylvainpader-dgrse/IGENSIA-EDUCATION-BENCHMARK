@@ -1091,10 +1091,13 @@ tbody td.score-insuffisant { background: var(--score-insuffisant) !important; co
   text-align: left;
   font-weight: 700;
   font-size: 0.75rem;
+  vertical-align: middle;
 }
 .xerfi-table td {
   padding: 0.5rem 0.8rem;
   border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
 }
 .xerfi-table .negative { color: var(--non-text); font-weight: 700; }
 .xerfi-table .positive { color: var(--oui-text); font-weight: 700; }
