@@ -1099,6 +1099,9 @@ tbody td.score-insuffisant { background: var(--score-insuffisant) !important; co
   text-align: left;
   vertical-align: top;
 }
+.xerfi-table td:first-child {
+  font-weight: 600;
+}
 .xerfi-table .negative { color: var(--non-text); font-weight: 700; }
 .xerfi-table .positive { color: var(--oui-text); font-weight: 700; }
 .xerfi-case {
