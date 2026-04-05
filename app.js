@@ -791,22 +791,37 @@ function renderRadar() {
 // =============================
 // RADAR COMPARISON PANEL
 // =============================
+function getJustifSummary(justif) {
+  // Extract first sentence after the verdict (OUI/NON/PARTIEL —)
+  if (!justif) return '';
+  const clean = justif.replace(/^(OUI|NON|PARTIEL)\s*[\u2014—-]\s*/i, '');
+  // Take first sentence (up to first period + space or first bullet)
+  const firstLine = clean.split('\n')[0].trim();
+  // Limit length
+  return firstLine.length > 150 ? firstLine.substring(0, 147) + '...' : firstLine;
+}
+
 function renderRadarComparison(igensiaData) {
   const el = document.getElementById('radarComparison');
   if (!el) return;
 
   if (radarSchools.length === 0) {
-    el.innerHTML = '<div class="comparison-hint">Ajoutez des écoles via le sélecteur ci-dessus pour comparer critère par critère avec IGENSIA.</div>';
+    el.innerHTML = '<div class="comparison-hint">Ajoutez des écoles via le sélecteur ci-dessus pour comparer concrètement ce qu\'elles font par rapport à IGENSIA.</div>';
     return;
   }
 
-  const otherSchools = radarSchools.map(name => D.grille.find(s => s.name === name)).filter(Boolean);
-  if (!igensiaData || otherSchools.length === 0) return;
+  const otherSchools = radarSchools.map(name => {
+    const grille = D.grille.find(s => s.name === name);
+    const justif = D.justifications.find(s => s.name === name);
+    return grille && justif ? { grille, justif } : null;
+  }).filter(Boolean);
 
-  let html = '<h3>Comparaison détaillée par axe</h3>';
+  const igJustif = D.justifications.find(s => isIgensia(s.name));
+  if (!igensiaData || !igJustif || otherSchools.length === 0) return;
+
+  let html = '<h3>Comparaison détaillée par axe — ce que font concrètement les autres</h3>';
 
   AXES.forEach(axe => {
-    // Compute IGENSIA score for this axe
     const igScore = axe.cols.reduce((sum, col) => {
       const v = igensiaData.verdicts[String(col)] || '';
       return sum + (v === 'OUI' ? 1 : v === 'PARTIEL' ? 0.5 : 0);
@@ -817,56 +832,47 @@ function renderRadarComparison(igensiaData) {
       <span>${axe.id} — ${axe.name}</span>
       <span class="axe-scores">IGENSIA : ${igScore}/${axe.max}</span>
     </div>`;
-    html += `<div class="comparison-columns">`;
 
-    // Left: IGENSIA
-    html += `<div class="comparison-col col-igensia">`;
-    html += `<div class="comparison-col-title">IGENSIA Education</div>`;
-    axe.cols.forEach(col => {
-      const v = igensiaData.verdicts[String(col)] || '';
-      const critName = D.criteria[col - 1]?.name || '';
-      const dotCls = v === 'OUI' ? 'dot-oui' : v === 'PARTIEL' ? 'dot-partiel' : 'dot-non';
-      html += `<div class="crit-line">
-        <span class="crit-dot ${dotCls}"></span>
-        <span class="crit-label">${critName} <strong>(${v})</strong></span>
-      </div>`;
-    });
-    html += `</div>`;
-
-    // Right: Others - show what they do BETTER than IGENSIA
-    html += `<div class="comparison-col col-others">`;
-    html += `<div class="comparison-col-title">Écoles comparées — bonnes pratiques</div>`;
-
-    let hasBetter = false;
     axe.cols.forEach(col => {
       const igV = igensiaData.verdicts[String(col)] || '';
-      if (igV === 'OUI') return; // IGENSIA already has it, skip
-
       const critName = D.criteria[col - 1]?.name || '';
-      const schoolsWithOui = [];
-      otherSchools.forEach(s => {
+      const igJustifText = igJustif.justifs[String(col)] || '';
+      const igSummary = getJustifSummary(igJustifText);
+      const dotCls = igV === 'OUI' ? 'dot-oui' : igV === 'PARTIEL' ? 'dot-partiel' : 'dot-non';
+
+      // Collect what others do on this criterion
+      let othersHtml = '';
+      otherSchools.forEach(({grille: s, justif: j}) => {
         const v = s.verdicts[String(col)] || '';
-        if (v === 'OUI' || (igV === 'NON' && v === 'PARTIEL')) {
-          schoolsWithOui.push({ name: s.name.replace(/\n/g, ' ').substring(0, 20), verdict: v });
-        }
+        if (v === 'NON') return; // Skip if they don't do it either
+        const shortName = s.name.replace(/\n/g, ' ').substring(0, 22);
+        const summary = getJustifSummary(j.justifs[String(col)] || '');
+        if (!summary) return;
+        const oDotCls = v === 'OUI' ? 'dot-oui' : 'dot-partiel';
+        const isBetter = (igV === 'NON' && v !== 'NON') || (igV === 'PARTIEL' && v === 'OUI');
+        othersHtml += `<div class="crit-other-item ${isBetter ? 'is-better' : ''}">
+          <span class="crit-dot ${oDotCls}"></span>
+          <span><strong>${shortName}</strong> : ${escapeHTML(summary)}</span>
+        </div>`;
       });
 
-      if (schoolsWithOui.length > 0) {
-        hasBetter = true;
-        const names = schoolsWithOui.map(s => s.name).join(', ');
-        html += `<div class="crit-line">
-          <span class="crit-dot dot-oui"></span>
-          <span class="crit-label">${critName}<br><span class="school-tag">${names}</span></span>
-        </div>`;
-      }
+      html += `<div class="comparison-criterion">
+        <div class="comparison-columns">
+          <div class="comparison-col col-igensia">
+            <div class="crit-line">
+              <span class="crit-dot ${dotCls}"></span>
+              <span class="crit-label"><strong>${critName}</strong> (${igV})</span>
+            </div>
+            <div class="crit-summary">${escapeHTML(igSummary)}</div>
+          </div>
+          <div class="comparison-col col-others">
+            ${othersHtml || '<div class="comparison-empty">—</div>'}
+          </div>
+        </div>
+      </div>`;
     });
 
-    if (!hasBetter) {
-      html += `<div class="comparison-empty">IGENSIA est au niveau ou au-dessus sur cet axe.</div>`;
-    }
-
     html += `</div>`;
-    html += `</div></div>`;
   });
 
   el.innerHTML = html;
