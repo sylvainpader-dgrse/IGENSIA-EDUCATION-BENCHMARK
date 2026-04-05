@@ -756,6 +756,13 @@ tbody td.score-insuffisant { background: var(--score-insuffisant) !important; co
   border-radius: 3px;
   background: var(--accent);
 }
+.stat-card .stat-breakdown {
+  margin-top: 0.5rem;
+  font-size: 0.65rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  text-align: left;
+}
 
 /* === LABEL PILLS in Grille === */
 .label-pill {

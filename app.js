@@ -91,15 +91,30 @@ function extractLabels(school, idx) {
 function renderStats() {
   const total = D.grille.length;
   let labelled = 0, pacte = 0, sam = 0;
+  let ddrs = 0, lucie = 0, ecovadis = 0, iso14 = 0;
   D.grille.forEach((s, i) => {
     if (s.verdicts['4'] === 'OUI') labelled++;
     const info = extractLabels(s, i);
     if (info.pacte) pacte++;
     if (info.sam) sam++;
+    info.labels.forEach(l => {
+      if (l === 'DD&RS') ddrs++;
+      if (l === 'LUCIE') lucie++;
+      if (l === 'EcoVadis') ecovadis++;
+      if (l === 'ISO 14001') iso14++;
+    });
   });
   const rapportAnalyses = D.focus.length;
   const el = document.getElementById('statsBanner');
   if (!el) return;
+
+  // Build label breakdown
+  const labelDetails = [];
+  if (ddrs) labelDetails.push(`DD&RS : ${ddrs}/${total} (${Math.round(ddrs*100/total)}%)`);
+  if (lucie) labelDetails.push(`LUCIE : ${lucie}/${total} (${Math.round(lucie*100/total)}%)`);
+  if (ecovadis) labelDetails.push(`EcoVadis : ${ecovadis}/${total} (${Math.round(ecovadis*100/total)}%)`);
+  if (iso14) labelDetails.push(`ISO 14001 : ${iso14}/${total} (${Math.round(iso14*100/total)}%)`);
+
   el.innerHTML = `
     <div class="stat-card">
       <div class="stat-num">${total}</div>
@@ -109,6 +124,7 @@ function renderStats() {
       <div class="stat-num">${Math.round(labelled*100/total)}%</div>
       <div class="stat-label">Labellisées RSE (${labelled}/${total})</div>
       <div class="stat-bar"><div class="stat-bar-fill" style="width:${labelled*100/total}%"></div></div>
+      <div class="stat-breakdown">${labelDetails.join('<br>')}</div>
     </div>
     <div class="stat-card">
       <div class="stat-num">${Math.round(rapportAnalyses*100/total)}%</div>
@@ -117,8 +133,13 @@ function renderStats() {
     </div>
     <div class="stat-card">
       <div class="stat-num">${Math.round(pacte*100/total)}%</div>
-      <div class="stat-label">Pacte Mondial (${pacte}/${total})</div>
+      <div class="stat-label">Pacte Mondial / PRME (${pacte}/${total})</div>
       <div class="stat-bar"><div class="stat-bar-fill" style="width:${pacte*100/total}%"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">${Math.round(sam*100/total)}%</div>
+      <div class="stat-label">Société à Mission (${sam}/${total})</div>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width:${sam*100/total}%"></div></div>
     </div>`;
 }
 
